@@ -1,0 +1,1 @@
+az vm availability-set create --name lnx-as --resource-group poc-east-rg --location eastus

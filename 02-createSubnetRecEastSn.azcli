@@ -1,0 +1,15 @@
+# create subnet
+az network vnet subnet create --address-prefix 192.168.3.0/24 --name rec-east-sn --resource-group Poc-east-rg --vnet-name east-vnet
+# create a network security group
+az network nsg create --name rec-nsg --resource-group Poc-east-rg --location eastus
+# Create inbound ssh rule
+az network nsg rule create --name allowSshInbound --nsg-name rec-nsg --priority 100 --resource-group poc-east-rg --protocol Tcp --source-port-ranges '*' --destination-port-ranges 22 --source-address-prefixes Internet \
+--destination-address-prefixes VirtualNetwork --direction Inbound --access Allow --description ssh
+# Create inbound https rule
+az network nsg rule create --name allowHttpsInbound --nsg-name rec-nsg --priority 110 --resource-group poc-east-rg --protocol Tcp --source-port-ranges '*' --destination-port-ranges 443 --source-address-prefixes Internet \
+--destination-address-prefixes VirtualNetwork --direction Inbound --access Allow --description https
+# Create inbound http rule
+az network nsg rule create --name allowHttpInbound --nsg-name rec-nsg --priority 120 --resource-group poc-east-rg --protocol Tcp --source-port-ranges '*' --destination-port-ranges 80 --source-address-prefixes Internet \
+--destination-address-prefixes VirtualNetwork --direction Inbound --access Allow --description http
+# Associate nsg with subnet
+az network vnet subnet update --name rec-east-sn --resource-group poc-east-rg --vnet-name East-VNET --network-security-group rec-nsg
