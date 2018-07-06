@@ -1,0 +1,2 @@
+# Create public ip address for load balancer
+az network public-ip create --name lnx-lb-pip --resource-group poc-east-rg --allocation-method Static --location eastus --sku Basic
