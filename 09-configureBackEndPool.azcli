@@ -1,0 +1,4 @@
+# Configure the load balancer backend address pool for NGNIX
+# Reference: https://docs.microsoft.com/en-us/cli/azure/network/lb/address-pool?view=azure-cli-latest#az-network-lb-address-pool-create
+az network lb address-pool create -g poc-east-rg --lb-name lnx-lb --name albNgxBackEndIpConfig
+# end of scriptlet
