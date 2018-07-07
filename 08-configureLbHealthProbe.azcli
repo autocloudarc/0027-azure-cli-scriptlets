@@ -1,0 +1,4 @@
+# Configure the load balancer health probe for http traffic to each vm
+# Reference: https://docs.microsoft.com/en-us/cli/azure/network/lb/probe?view=azure-cli-latest#az-network-lb-probe-create
+az network lb probe create --lb-name lnx-lb --name httpProbe --protocol Http --port 80 --resource-group poc-east-rg --interval 5 --path '/' --threshold 2
+# end of scriptlet
