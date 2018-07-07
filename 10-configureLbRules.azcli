@@ -1,0 +1,4 @@
+# Configure the load balancing rules for http traffic
+# Reference: https://docs.microsoft.com/en-us/cli/azure/network/lb/rule?view=azure-cli-latest#az-network-lb-rule-create
+az network lb rule create --backend-port 80 --frontend-port 80 --lb-name lnx-lb --protocol Tcp --resource-group poc-east-rg --idle-timeout 4 --floating-ip false --name lbRuleHttp
+# end of scriptlet
