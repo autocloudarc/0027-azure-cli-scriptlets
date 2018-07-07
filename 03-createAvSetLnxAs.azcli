@@ -1,1 +1,4 @@
-az vm availability-set create --name lnx-as --resource-group poc-east-rg --location eastus
+# Create an availability set for the Linux virtual machines
+# Reference: https://docs.microsoft.com/en-us/cli/azure/vm/availability-set?view=azure-cli-latest#az-vm-availability-set-create
+az vm availability-set create --name lnx-as --resource-group poc-east-rg --location eastus --platform-fault-domain-count 3 --platform-update-domain-count 5
+# end of scriptlet
