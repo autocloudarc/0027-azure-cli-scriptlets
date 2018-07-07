@@ -1,0 +1,2 @@
+# Create an external Azure load balancer
+az network lb create --name lnx-lb --resource-group poc-east-rg --location eastus --sku Basic --public-ip-address lnx-lb-pip --public-ip-address-allocation Static
