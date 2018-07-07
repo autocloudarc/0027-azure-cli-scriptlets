@@ -1,0 +1,6 @@
+# Create Linux CentOS 7.4 VM lnx2
+# Refrence: https://docs.microsoft.com/en-us/cli/azure/vm?view=azure-cli-latest#az-vm-create
+az network nic create --resource-group poc-east-rg --name lnx2-vnic --vnet-name East-VNET --subnet lnx-east-sn
+az vm create --resource-group poc-east-rg --location eastus --name lnx2 --os-disk-size-gb 32 --storage-sku Standard_LRS --admin-username linux.user --availability-set lnx-as --image CentOS --size Standard_D1_v2 --nics lnx2-vnic --ssh-key-value 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC86CdQeuXbULj/HNqmfZA0SUOp0I3xGCjzBglQDHqC6iOSoog6dSx35GKq8KrZ2KHCoTclQQuwDEVkeEGRw+xIzuWtxCEfsB57YY7cQFbtPaQwVIySLyHMDvdhZUxRkhtwr9U5gyxdRfj3i3DXVsYbY9CL4y+c//spWvDSQKfo0bZo3gO2GwDSuEA+F7Z0Gxj+se+OpSPg5kGlWsP9zqtxNdkqg46M8RIaFcoJxHT/oXKxdN+993tZhX8WRSq+GFXVXVjmq17eNepiHtUkCvcTYPj+EWsDUDMLUj2pFlwCadsWRGz4FvdPcDu8glP9sWjr412088CpqftI6yH9dLBt linuxuser01@PRESTOPA-PROBK'
+# end scriptlet
+
