@@ -1,9 +1,9 @@
 # Configure NAT rules for SSH
 # Reference: https://docs.microsoft.com/en-us/cli/azure/network/lb/inbound-nat-rule?view=azure-cli-latest#az-network-lb-inbound-nat-rule-create
 # SSH rule for lnx1
-az network lb inbound-nat-rule create -g poc-east-rg --lb-name lnx-lb -n lnx1nat-ssh --protocol Tcp --frontend-port 2201 --backend-port 22
+az network lb inbound-nat-rule create -g poc-east-rg --lb-name lnx-lb -n lnx1nat-ssh --protocol Tcp --frontend-port 2201 --backend-port 22 --frontend-ip-name LoadBalancerFrontEnd
 # SSH rule for lnx2
-az network lb inbound-nat-rule create -g poc-east-rg --lb-name lnx-lb -n lnx2nat-ssh --protocol Tcp --frontend-port 2202 --backend-port 22
+az network lb inbound-nat-rule create -g poc-east-rg --lb-name lnx-lb -n lnx2nat-ssh --protocol Tcp --frontend-port 2202 --backend-port 22 --frontend-ip-name LoadBalancerFrontEnd
 # SSH rule for lnx3
-az network lb inbound-nat-rule create -g poc-east-rg --lb-name lnx-lb -n lnx3nat-ssh --protocol Tcp --frontend-port 2203 --backend-port 22
+az network lb inbound-nat-rule create -g poc-east-rg --lb-name lnx-lb -n lnx3nat-ssh --protocol Tcp --frontend-port 2203 --backend-port 22 --frontend-ip-name LoadBalancerFrontEnd
 # end of scriptlet
