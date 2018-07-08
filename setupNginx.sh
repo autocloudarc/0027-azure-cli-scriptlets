@@ -42,4 +42,3 @@ addNginxRepo
 sudo yum install nginx
 # Start NGINX service
 sudo systemctl start nginx.service
-exit
