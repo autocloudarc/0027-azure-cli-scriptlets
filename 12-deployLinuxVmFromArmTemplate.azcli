@@ -1,0 +1,16 @@
+# Create a new Linux CentOS VM using an existing ARM template
+
+# Create a network interface
+az network nic create --resource-group poc-east-rg --vnet-name East-VNET --subnet lnx-east-sn --name lnx3-vnic
+# Get availability set id
+avSetId=$(az vm availability-set show --resource-group poc-east-rg --name lnx-as --query id -o tsv)
+# Get nic id
+vnicId=$(az network nic show --name lnx3-vnic --resource-group poc-east-rg --query id -o tsv)
+# Get storage account name
+storageAccount=$(az storage account list --resource-group poc-storage-rg -o table | grep eastus | awk '{print $4}')
+# display $avSetId, $vnicId and $saName values
+echo $avSetId
+echo $vnicId
+echo $saName
+az group deployment create --resource-group poc-east-rg --mode Incremental --name azuredeploy --template-uri 'https://raw.githubusercontent.com/autocloudarc/0027-azure-cli-scriptlets/master/azuredeploy.json' \
+--parameters lnxAvSetId="$avSetId" nicId="$vnicId" saName="$storageAccount"
