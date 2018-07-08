@@ -31,7 +31,7 @@ EOF
 ## START
 addNginxRepo
 # Install NGINX
-sudo yum install nginx
+sudo yum install nginx -y
 # Start NGINX service
 sudo systemctl start nginx.service
 exit
