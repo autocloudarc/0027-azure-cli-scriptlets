@@ -1,0 +1,5 @@
+# Set custom script extension to install NGIX
+# Reference: https://docs.microsoft.com/en-us/cli/azure/vm/extension?view=azure-cli-latest#az-vm-extension-set
+az vm extension set --resource-group poc-east-rg --vm-name lnx9 --name customScript --publisher Microsoft.Azure.Extensions \
+--settings '{"fileUris":["https://raw.githubusercontent.com/autocloudarc/0027-azure-cli-scriptlets/master/13-setupNginx.sh"],"commandToExecute":"./13-setupNginx.sh"}'
+# end of scriptlet
