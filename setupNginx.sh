@@ -32,7 +32,7 @@ EOF
 ## START
 
 # Clear yum metadata
-sudo yum -y clean all
+yum -y clean all
 # Update packages
 yum -y update
 # Install httpd
