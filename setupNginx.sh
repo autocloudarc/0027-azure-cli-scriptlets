@@ -11,32 +11,23 @@
 # 2. https://www.attosol.com/installing-load-balancing-nginx-on-centos-7-in-azure/
 
 
-# Preserve original ngix.repo file that will be updated
-tmpBakDir="/var/tmp/backupDir"
-# Source path to NGIX repo
 nginxRepo="/etc/yum.repos.d/nginx.repo"
-# udev rules
 
-function preserveOriginalConfigFiles ()
-{
-    sudo mkdir $tmpBakDir
-    sudo cp $nginxRepo $tmpBakDir
-} #end function
-
-#apply yum changes
+# Add NGINX repo
 function addNginxRepo ()
 {
 #Modify default repo
-cat > $nginxRepo << EOF
+cat > "$nginxRepo" << EOF
 [nginx]
 name=nginx repo
 baseurl=http://nginx.org/packages/centos/7/$basearch/
 gpgcheck=0
 enabled=1
 EOF
+}
+# end function
 
 ## START
-preserveOriginalConfigFile
 addNginxRepo
 # Install NGINX
 sudo yum install nginx
