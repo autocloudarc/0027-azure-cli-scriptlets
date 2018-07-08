@@ -12,7 +12,7 @@
 
 
 nginxRepo="/etc/yum.repos.d/nginx.repo"
-
+sudo rm $nginxRepo
 # Add NGINX repo
 function addNginxRepo ()
 {
@@ -29,7 +29,15 @@ EOF
 # end function
 
 ## START
+
+# Clear yum metadata
+sudo yum clean all
+# Free up space taken by orphaned data from disabled or removed repos (-rf = recursive, force)
+sudo rm -rf /var/cache/yum/*
+# Add NGINX repo
 addNginxRepo
+# Update packages
+sudo yum -y update
 # Install NGINX
 sudo yum install nginx -y
 # Start NGINX service
