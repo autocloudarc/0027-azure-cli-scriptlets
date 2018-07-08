@@ -20,7 +20,7 @@ function addNginxRepo ()
 cat > "${nginxRepo}" << EOF
 [nginx]
 name=nginx repo
-baseurl=http://nginx.org/packages/centos/7/$basearch/
+baseurl=http://nginx.org/packages/centos/7/$basearch/x86_64
 gpgcheck=0
 enabled=1
 EOF
@@ -31,7 +31,7 @@ EOF
 ## START
 
 # Clear yum metadata
-sudo yum clean all
+sudo yum -y clean all
 # Free up space taken by orphaned data from disabled or removed repos (-rf = recursive, force)
 sudo rm -rf /var/cache/yum/*
 # Add NGINX repo
@@ -39,7 +39,7 @@ addNginxRepo
 # Update packages
 sudo yum -y update
 # Install NGINX
-sudo yum install nginx -y
+sudo yum -y install nginx
 # Start NGINX service
 sudo systemctl start nginx.service
 exit
