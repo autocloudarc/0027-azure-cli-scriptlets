@@ -34,6 +34,7 @@ EOF
 sudo yum -y clean all
 # Free up space taken by orphaned data from disabled or removed repos (-rf = recursive, force)
 sudo rm -rf /var/cache/yum/*
+sudo yum -y install deltarpm
 # Add NGINX repo
 addNginxRepo
 # Update packages
