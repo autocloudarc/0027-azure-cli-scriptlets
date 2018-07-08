@@ -9,10 +9,11 @@
 # REFERENCES:
 # 1. http://nginx.org/en/linux_packages.html
 # 2. https://www.attosol.com/installing-load-balancing-nginx-on-centos-7-in-azure/
+# 3. https://stackoverflow.com/questions/21984960/escaping-a-dollar-sign-in-unix-inside-the-cat-command
 
 
-# nginxRepo="/etc/yum.repos.d/nginx.repo"
-# rm $nginxRepo
+nginxRepo="/etc/yum.repos.d/nginx.repo"
+rm $nginxRepo
 # Add NGINX repo
 
 function addNginxRepo ()
@@ -21,7 +22,7 @@ function addNginxRepo ()
 cat > "${nginxRepo}" << EOF
 [nginx]
 name=nginx repo
-baseurl=http://nginx.org/packages/centos/7/$basearch/
+baseurl=http://nginx.org/packages/centos/7/\$basearch/
 gpgcheck=0
 enabled=1
 EOF
@@ -35,27 +36,17 @@ EOF
 yum -y clean all
 # Update packages
 yum -y update
-# Install httpd
-yum -y install httpd
 # Configure firewall ports. Note 22/tcp is enabled by default.
-firewall-cmd --permanent --add-port=80/tcp
-firewall-cmd --permanent --add-port=443/tcp
-firewall-cmd --reload
 # Free up space taken by orphaned data from disabled or removed repos (-rf = recursive, force)
 rm -rf /var/cache/yum/*
-yum -y install deltarpm
-# yum-config-manager --save --setopt=nginx.skip_if_unavailable=true
+# yum -y install deltarpm
 # Add NGINX repo
-# addNginxRepo
+addNginxRepo
 
 # Install NGINX
-# yum -y install nginx
-# Start NGINX service
-# systemctl start nginx.service
-# start Apache daemon
-systemctl start httpd
-# Ensure Apache starts on boot
-systemctl enable httpd
-
+yum -y install nginx
+Start NGINX service
+systemctl start nginx.service
+systemctl enable nginx.service
 
 exit
