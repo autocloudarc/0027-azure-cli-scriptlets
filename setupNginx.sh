@@ -11,8 +11,8 @@
 # 2. https://www.attosol.com/installing-load-balancing-nginx-on-centos-7-in-azure/
 
 
-nginxRepo="/etc/yum.repos.d/nginx.repo"
-rm $nginxRepo
+# nginxRepo="/etc/yum.repos.d/nginx.repo"
+# rm $nginxRepo
 # Add NGINX repo
 
 function addNginxRepo ()
@@ -33,16 +33,29 @@ EOF
 
 # Clear yum metadata
 sudo yum -y clean all
+# Update packages
+yum -y update
+# Install httpd
+yum -y install httpd
+# Configure firewall ports. Note 22/tcp is enabled by default.
+firewall-cmd --permanent --add-port=80/tcp
+firewall-cmd --permanent --add-port=443/tcp
+firewall-cmd --reload
 # Free up space taken by orphaned data from disabled or removed repos (-rf = recursive, force)
 rm -rf /var/cache/yum/*
 yum -y install deltarpm
-yum-config-manager --save --setopt=nginx.skip_if_unavailable=true
+# yum-config-manager --save --setopt=nginx.skip_if_unavailable=true
 # Add NGINX repo
-addNginxRepo
-# Update packages
-yum -y update
+# addNginxRepo
+
 # Install NGINX
-yum -y install nginx
+# yum -y install nginx
 # Start NGINX service
-systemctl start nginx.service
+# systemctl start nginx.service
+# start Apache daemon
+systemctl start httpd
+# Ensure Apache starts on boot
+systemctl enable httpd
+
+
 exit
