@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 # SYNOPSIS:     Installs the NGINX service on a CentOS 7 server
 # DESCRIPTION:  This shell script install a basic NGINX server on a CentOS 7 machine with the default web page.
 # EXAMPLE:      bash 13-setupNginx.sh
