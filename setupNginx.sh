@@ -20,7 +20,7 @@ function addNginxRepo ()
 cat > "${nginxRepo}" << EOF
 [nginx]
 name=nginx repo
-baseurl=http://nginx.org/packages/centos/7/$basearch/x86_64
+baseurl=http://nginx.org/packages/centos/7/$basearch/x86_64/repodata/repomd.xml
 gpgcheck=0
 enabled=1
 EOF
