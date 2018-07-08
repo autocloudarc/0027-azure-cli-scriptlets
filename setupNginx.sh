@@ -15,6 +15,7 @@ nginxRepo="/etc/yum.repos.d/nginx.repo"
 sudo rm $nginxRepo
 # Add NGINX repo
 # baseurl=http://nginx.org/packages/centos/7/$basearch
+
 function addNginxRepo ()
 {
 #Modify default repo
@@ -35,8 +36,9 @@ sudo yum -y clean all
 # Free up space taken by orphaned data from disabled or removed repos (-rf = recursive, force)
 sudo rm -rf /var/cache/yum/*
 sudo yum -y install deltarpm
+sudo yum-config-manager --disable nginx
 # Add NGINX repo
-addNginxRepo
+# addNginxRepo
 # Update packages
 sudo yum -y update
 # Install NGINX
