@@ -1,0 +1,111 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.1",
+  "parameters": {
+    "adminUserName": {
+      "defaultValue": "linux.user",
+      "type": "string",
+      "metadata": {
+        "description": "Enter the linux user name."
+      }
+    },
+    "sshKeyData": {
+      "type": "string",
+      "metadata": {
+        "description": "Please enter the SSH rsa public key file as a string. For example, use the output from: cat ~/.ssh/linux.user.sshkey.pub"
+      }
+    },
+    "lnxAvSetId": {
+      "metadata": {
+        "description": "Enter the avaiability set resource id from the portal."
+      },
+      "type": "string"
+    },
+    "nicId": {
+      "metadata": {
+        "description": "Enter the nic resource id from the portal."
+      },
+      "type": "string"
+    },
+    "saName": {
+      "metadata": {
+        "description": "Enter the storage account name from the portal. This will be used for the diagnostic storage account."
+      },
+      "type": "string"
+    }
+  },
+  "variables": {
+    "azureRegion": "[resourceGroup().location]",
+    "vmName": "lnx3",
+    "lnxVmSize": "Standard_D1_v2",
+    "imagePublisher": "OpenLogic",
+    "imageOffer": "CentOS",
+    "imageSku": "7.4",
+    "diskNameOs": "[toLower(concat(variables('vmName'),'-osdisk'))]",
+    "saType": "Standard_LRS",
+    "saUrlSuffix": ".blob.core.windows.net",
+    "diagStorageUri": "[concat('http://',parameters('saName'),variables('saUrlSuffix'))]"
+  },
+  "resources": [
+    {
+      "comments": "04.03.createlnxServerUsingArmTemplate",
+      "type": "Microsoft.Compute/virtualMachines",
+      "name": "[variables('vmName')]",
+      "apiVersion": "2017-03-30",
+      "location": "[variables('azureRegion')]",
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[variables('lnxVmSize')]"
+        },
+        "osProfile": {
+          "computerName": "[variables('vmName')]",
+          "adminUsername": "[parameters('adminUserName')]",
+          "linuxConfiguration": {
+            "disablePasswordAuthentication": "true",
+            "ssh": {
+              "publicKeys": [
+                {
+                  "path": "[concat('/home/',parameters('adminUserName'),'/.ssh/authorized_keys')]",
+                  "keyData": "[parameters('sshKeyData')]"
+                }
+              ]
+            }
+          }
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "[variables('imagePublisher')]",
+            "offer": "[variables('imageOffer')]",
+            "sku": "[variables('imageSku')]",
+            "version": "latest"
+          },
+          "osDisk": {
+            "name": "[variables('diskNameOs')]",
+            "caching": "ReadWrite",
+            "createOption": "FromImage",
+            "managedDisk": {
+              "storageAccountType": "[variables('saType')]"
+            }
+          },
+          "dataDisks": []
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[parameters('nicId')]"
+            }
+          ]
+        },
+        "diagnosticsProfile": {
+          "bootDiagnostics": {
+            "enabled": true,
+            "storageUri": "[variables('diagStorageUri')]"
+          }
+        },
+        "availabilitySet": {
+          "id": "[parameters('lnxAvSetId')]"
+        }
+      }
+    }
+  ]
+}
