@@ -14,13 +14,13 @@
 nginxRepo="/etc/yum.repos.d/nginx.repo"
 sudo rm $nginxRepo
 # Add NGINX repo
+# baseurl=http://nginx.org/packages/centos/7/$basearch
 function addNginxRepo ()
 {
 #Modify default repo
 cat > "${nginxRepo}" << EOF
 [nginx]
 name=nginx repo
-baseurl=http://nginx.org/packages/centos/7/$basearch
 gpgcheck=0
 enabled=1
 EOF
