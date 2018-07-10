@@ -10,15 +10,16 @@
 # 1. http://nginx.org/en/linux_packages.html
 # 2. https://www.attosol.com/installing-load-balancing-nginx-on-centos-7-in-azure/
 # 3. https://stackoverflow.com/questions/21984960/escaping-a-dollar-sign-in-unix-inside-the-cat-command
+# 4. https://www.cyberciti.biz/tips/find-out-if-file-exists-with-conditional-expressions.html
 
 
 nginxRepo="/etc/yum.repos.d/nginx.repo"
-rm $nginxRepo
-# Add NGINX repo
+nginxSbin="/usr/sbin/nginx"
+nginxIndex="/usr/share/nginx/html/index.html"
 
+# Add NGINX repo
 function addNginxRepo ()
 {
-#Modify default repo
 cat > "${nginxRepo}" << EOF
 [nginx]
 name=nginx repo
@@ -36,17 +37,24 @@ EOF
 yum -y clean all
 # Update packages
 yum -y update
-# Configure firewall ports. Note 22/tcp is enabled by default.
 # Free up space taken by orphaned data from disabled or removed repos (-rf = recursive, force)
 rm -rf /var/cache/yum/*
-# yum -y install deltarpm
-# Add NGINX repo
-addNginxRepo
 
-# Install NGINX
-yum -y install nginx
-Start NGINX service
-systemctl start nginx.service
-systemctl enable nginx.service
+# Add NGINX repo if it doesn't already exist, then and install and configure NGINX
+if [ ! -e "$nginxRepo" ]; then
+    addNginxRepo
+fi
+
+# Install NGNIX if not arleady installd
+if [! -e "$nginxSbin" ]; then
+    # Install NGINX
+    yum -y install nginx
+    # Add hostname
+    sudo sed -i "s/Welcome to nginx/Welcome to nginx on $HOSTNAME/" $nginxIndex
+    # Start NGINX
+    systemctl start nginx.service
+    # Enable NGIX for persistent start on boot
+    systemctl enable nginx.service
+fi
 
 exit
