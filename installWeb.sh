@@ -41,12 +41,14 @@ yum -y update
 rm -rf /var/cache/yum/*
 
 # Add NGINX repo if it doesn't already exist, then and install and configure NGINX
-if [ ! -e "$nginxRepo" ]; then
+if [ ! -e "$nginxRepo" ];
+then
     addNginxRepo
 fi
 
 # Install NGNIX if not arleady installd
-if [! -e "$nginxSbin" ]; then
+if [! -e "$nginxSbin" ];
+then
     # Install NGINX
     yum -y install nginx
     # Add hostname
