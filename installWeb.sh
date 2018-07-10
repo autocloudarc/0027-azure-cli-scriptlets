@@ -46,17 +46,17 @@ then
     addNginxRepo
 fi
 
-# Install NGNIX if not arleady installd
+# Install NGNIX if not arleady installed
 if [! -e "$nginxSbin" ]
 then
     # Install NGINX
-    yum -y install nginx
+    sudo yum -y install nginx
     # Add hostname
     sudo sed -i "s/Welcome to nginx/Welcome to nginx on $HOSTNAME/" $nginxIndex
     # Start NGINX
-    systemctl start nginx.service
+    sudo systemctl start nginx.service
     # Enable NGIX for persistent start on boot
-    systemctl enable nginx.service
+    sudo systemctl enable nginx.service
 fi
 
 exit
