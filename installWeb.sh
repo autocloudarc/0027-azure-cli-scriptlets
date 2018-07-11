@@ -34,11 +34,11 @@ EOF
 ## START
 
 # Clear yum metadata
-yum -y clean all
+# yum -y clean all
 # Update packages
-yum -y update
+# yum -y update
 # Free up space taken by orphaned data from disabled or removed repos (-rf = recursive, force)
-rm -rf /var/cache/yum/*
+# rm -rf /var/cache/yum/*
 
 # Add NGINX repo if it doesn't already exist, then and install and configure NGINX
 if [ ! -e "$nginxRepo" ]
@@ -50,13 +50,13 @@ fi
 # if [! -e "$nginxSbin" ]
 # then
     # Install NGINX
-    yum -y install nginx
+    sudo yum -y install nginx
     # Add hostname
-    sed -i "s/Welcome to nginx/Welcome to nginx on $HOSTNAME/" $nginxIndex
+    sudo sed -i "s/Welcome to nginx/Welcome to nginx on $HOSTNAME/" $nginxIndex
     # Start NGINX
-    systemctl start nginx.service
+    sudo systemctl start nginx.service
     # Enable NGIX for persistent start on boot
-    systemctl enable nginx.service
+    sudo systemctl enable nginx.service
 # fi
 
 exit
