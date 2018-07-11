@@ -68,23 +68,23 @@ EOF
 function cleanAndUpdate ()
 {
     # Clear yum packages and headers
-    yum -y clean all
+    sudo yum -y clean all
     # Free up space taken by orphaned data from disabled or removed repos (-rf = recursive, force)
-    rm -rf /var/cache/yum/*
+    sudo rm -rf /var/cache/yum/*
     # Download and install any updates
-    yum -y update
+    sudo yum -y update
 } #end function
 
 # Install NGNIX if not arleady installed
 function installAndConfigureWebService ()
 {
-    yum -y install nginx
+    sudo yum -y install nginx
     # Add hostname
-    sed -i "s/Welcome to nginx/Welcome to nginx on $HOSTNAME/" $nginxIndex
+    sudo sed -i "s/Welcome to nginx/Welcome to nginx on $HOSTNAME/" $nginxIndex
     # Enable NGIX for persistent start on boot
-    systemctl enable nginx.service
+    sudo systemctl enable nginx.service
     # Start NGINX
-    systemctl start nginx.service
+    sudo systemctl start nginx.service
 } #end function
 
 ## MAIN
