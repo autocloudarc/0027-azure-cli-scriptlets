@@ -11,6 +11,7 @@
 # 2. https://www.attosol.com/installing-load-balancing-nginx-on-centos-7-in-azure/
 # 3. https://stackoverflow.com/questions/21984960/escaping-a-dollar-sign-in-unix-inside-the-cat-command
 # 4. https://www.cyberciti.biz/tips/find-out-if-file-exists-with-conditional-expressions.html
+# 5. https://ryanstutorials.net/bash-scripting-tutorial/bash-if-statements.php
 
 
 nginxRepo="/etc/yum.repos.d/nginx.repo"
@@ -50,13 +51,13 @@ fi
 # if [! -e "$nginxSbin" ]
 # then
     # Install NGINX
-    yum -y install nginx
+    sudo yum -y install nginx
     # Add hostname
-    sed -i "s/Welcome to nginx/Welcome to nginx on $HOSTNAME/" $nginxIndex
+    sudo sed -i "s/Welcome to nginx/Welcome to nginx on $HOSTNAME/" $nginxIndex
     # Enable NGIX for persistent start on boot
-    systemctl enable nginx.service
+    sudo systemctl enable nginx.service
     # Start NGINX
-    systemctl start nginx.service
+    sudo systemctl start nginx.service
 # fi
 
 exit
