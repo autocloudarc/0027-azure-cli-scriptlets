@@ -1,0 +1,8 @@
+# Connect to each Linux node behind load balancer
+lbpip=$(az network public-ip show --resource-group poc-east-rg --name lnx-lb-pip --query ipAddress -o tsv)
+# Connect to lnx1
+ssh -i ~/.ssh/linux.user.sshkey -p 2201 linux.user@$lbpip
+# Connect to lnx2
+ssh -i ~/.ssh/linux.user.sshkey -p 2202 linux.user@$lbpip
+# Connect to lnx3
+ssh -i ~/.ssh/linux.user.sshkey -p 2203 linux.user@$lbpip
