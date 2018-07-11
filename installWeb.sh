@@ -48,8 +48,9 @@ REFERENCES:
 HEADER
 
 # ---copy start---
+
 nginxRepo="/etc/yum.repos.d/nginx.repo"
-nginxSbin="/usr/sbin/nginx"
+nginxConf="/etc/nginx/nginx.conf"
 nginxIndex="/usr/share/nginx/html/index.html"
 
 # Add NGINX repo
@@ -75,7 +76,7 @@ function cleanAndUpdate ()
 } #end function
 
 # Install NGNIX if not arleady installed
-fucntion installAndConfigureWebService ()
+function installAndConfigureWebService ()
 {
     sudo yum -y install nginx
     # Add hostname
@@ -98,7 +99,10 @@ fi
 cleanAndUpdate
 
 # Install and configure static web site
-installAndConfigureWebService
+if [ ! -e "$nginxConf" ]
+then
+    installAndConfigureWebService
+fi
 
 # ---copy end---
 
