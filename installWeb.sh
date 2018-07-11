@@ -47,16 +47,16 @@ then
 fi
 
 # Install NGNIX if not arleady installed
-if [! -e "$nginxSbin" ]
-then
+# if [! -e "$nginxSbin" ]
+# then
     # Install NGINX
-    sudo yum -y install nginx
+    yum -y install nginx
     # Add hostname
-    sudo sed -i "s/Welcome to nginx/Welcome to nginx on $HOSTNAME/" $nginxIndex
+    sed -i "s/Welcome to nginx/Welcome to nginx on $HOSTNAME/" $nginxIndex
     # Start NGINX
-    sudo systemctl start nginx.service
+    systemctl start nginx.service
     # Enable NGIX for persistent start on boot
-    sudo systemctl enable nginx.service
-fi
+    systemctl enable nginx.service
+# fi
 
 exit
