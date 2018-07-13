@@ -1,0 +1,10 @@
+# Capture VM Image
+# Deallocate VM
+az vm deallocate -g poc-east-rg -n lnx1
+# Generalize VM
+az vm generalize -g poc-east-rg -n lnx1
+# Verify that VM has been generalized and deallocated
+az vm get-instance-view -g poc-east-rg -n lnx1 --query instanceView.statuses -o table
+# Create new image from VM
+az image create --resource-group poc-east-rg --name lnx1-img --source lnx1
+# end of scriptlet
