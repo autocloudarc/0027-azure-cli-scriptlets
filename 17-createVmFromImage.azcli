@@ -15,4 +15,10 @@ saEast=$(az storage account list --resource-group poc-storage-rg --query "[?prim
 saEast=$(echo $saEast | cut -d "\"" -f 2)
 # Configure boot diagnostics
 az vm boot-diagnostics enable --storage $saEast --ids $lnx4id
+# Get lnx4 public ip to test SSH connection
+lnx4pip=$(az network public-ip show --resource-group poc-east-rg --name lnx4-pip --query ipAddress -o tsv)
+# Connect to lnx4
+ssh -i ~/.ssh/linux.user.sshkey linux.user@$lnx4pip
+# Exit SSH session after connecting [linux.user@lnx4~]$
+exit
 # end of scriptlet
