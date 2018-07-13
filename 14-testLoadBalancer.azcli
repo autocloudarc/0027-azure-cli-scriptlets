@@ -1,0 +1,9 @@
+# Test load balancer
+# Retrieve load balancer public ip address value
+lbpip=$(az network public-ip show --resource-group poc-east-rg --name lnx-lb-pip --query ipAddress -o tsv)
+# Get content from static web site 10 times
+for i in `seq 1 10`
+do
+    wget http://$lbpip -O - | grep lnx
+done
+# End of scriptlet
