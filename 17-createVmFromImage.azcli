@@ -3,11 +3,7 @@
 # 1. Create public IP address resource
 az network public-ip create --resource-group poc-east-rg --name lnx4-pip --allocation-method Static
 # 2. Create a newtork interface and associate it with the public ip address created in 1. above
-# az network nic create --resource-group poc-east-rg --vnet-name east-vnet --subnet rec-east-sn --name lnx4-vnic --public-ip-address lnx4-pip
-# 3. Get required parameters (nic id, storage account name, SSH public key)
-# Get nic id
-# nic04=$(az network nic list -g poc-east-rg --query [].id | grep lnx4-nic)
-# Get storage account
+az network nic create --resource-group poc-east-rg --vnet-name east-vnet --subnet rec-east-sn --name lnx4-vnic --public-ip-address lnx4-pip
 # Create new VM from image
 az vm create --resource-group poc-east-rg --name lnx4 --image lnx1-img --nics lnx4-vnic --nsg "" --admin-username linux.user --ssh-key-value ~/.ssh/linux.user.sshkey.pub
 # To configure boot diagnostics, the vm id and storage account blob endpoint will be required
