@@ -1,0 +1,22 @@
+# Create VM from image
+# Pre-requisites for creating a new VM
+# 1. Create public IP address resource
+az network public-ip create --resource-group poc-east-rg --name lnx4-pip --allocation-method Static
+# 2. Create a newtork interface and associate it with the public ip address created in 1. above
+# az network nic create --resource-group poc-east-rg --vnet-name east-vnet --subnet rec-east-sn --name lnx4-vnic --public-ip-address lnx4-pip
+# 3. Get required parameters (nic id, storage account name, SSH public key)
+# Get nic id
+# nic04=$(az network nic list -g poc-east-rg --query [].id | grep lnx4-nic)
+# Get storage account
+# Create new VM from image
+az vm create --resource-group poc-east-rg --name lnx4 --image lnx1-img --nics lnx4-vnic --nsg "" --admin-username linux.user --ssh-key-value ~/.ssh/linux.user.sshkey.pub
+# To configure boot diagnostics, the vm id and storage account blob endpoint will be required
+# Get VM id
+lnx4id=$(az vm list --resource-group poc-east-rg --query "[?name=='lnx4'].id" -o tsv)
+# Get storage account blob endpoint
+saEast=$(az storage account list --resource-group poc-storage-rg --query "[?primaryLocation=='eastus'].primaryEndpoints.blob" -o jsonc | grep blob)
+# Remove leading and trailing (") from $saEast variable
+saEast=$(echo $saEast | cut -d "\"" -f 2)
+# Configure boot diagnostics
+az vm boot-diagnostics enable --storage $saEast --ids $lnx4id
+# end of scriptlet
