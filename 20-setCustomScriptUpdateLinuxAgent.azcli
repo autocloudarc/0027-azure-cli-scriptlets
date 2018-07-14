@@ -3,6 +3,6 @@
 # 1. https://docs.microsoft.com/en-us/azure/virtual-machines/extensions/update-linux-agent
 # 2. https://docs.microsoft.com/en-us/azure/virtual-machines/linux/optimization
 for i in `seq 2 3`; do
-    az vm extension set --resource-group poc-east-rg --vm-name lnx$i --name customScript --publisher Microsoft.Azure.Extensions --settings '{"fileUris": ["https://raw.githubusercontent.com/autocloudarc/0027-azure-cli-scriptlets/master/updateLinuxAgent.sh"],"commandToExecute": "./updateLinuxAgent.sh"}'
+    az vm extension set --resource-group poc-east-rg --vm-name lnx$i --name customScript --publisher Microsoft.Azure.Extensions --settings '{"fileUris": ["https://raw.githubusercontent.com/autocloudarc/0027-azure-cli-scriptlets/master/20-updateLinuxAgent.sh"],"commandToExecute": "./20-updateLinuxAgent.sh"}'
 done
 # end of scriptlet
