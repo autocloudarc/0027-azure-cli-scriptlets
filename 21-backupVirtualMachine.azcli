@@ -15,7 +15,7 @@ az backup protection backup-now --resource-group poc-east-rg --vault-name $rsv -
 # Show backup result (either InProgress or Completed) with paded numerical index and timestamp.
 for i in $(seq -f "%02g" 1 100)
 do
-    backupStatus=$(az backup job list --resource-group poc-east-rg --vault-name $rsv --query "[?properties.operation=='Backup'].properties.status" -o tsv)
+    backupStatus=$(az backup job list --resource-group poc-east-rg --vault-name $rsv --query "[?properties.operation=='Backup'].properties.status[0]" -o tsv)
     echo $i $(date +%F/%T%Z) $backupStatus
 done
 # end of scriptlet
