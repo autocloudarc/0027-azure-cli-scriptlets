@@ -1,0 +1,12 @@
+# Resize VM
+# Show VM resize options for lnx2 and lnx3
+for i in `seq 2 3`
+do
+    az vm list-vm-resize-options --resource-group poc-east-rg -n lnx$i -o table | grep -i standard_a1_v2
+done
+# Resize lnx2 and lnx3
+for i in `seq 2 3`
+do
+    az vm resize --resource-group poc-east-rg -n lnx$i --size Standard_A1_v2
+done
+# end of scriptlet
