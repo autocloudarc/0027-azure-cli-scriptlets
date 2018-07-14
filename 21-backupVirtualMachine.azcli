@@ -2,6 +2,7 @@
 # Reference:
 # https://docs.microsoft.com/en-us/azure/backup/quick-backup-vm-cli
 # https://stackoverflow.com/questions/8789729/how-to-zero-pad-a-sequence-of-integers-in-bash-so-that-all-have-the-same-width
+# https://www.lifewire.com/display-date-time-using-linux-command-line-4032698
 # Set backup policy
 # Find recovery services vault name
 rsv=$(az backup vault list --resource-group poc-east-rg --query "[]".name -o tsv | grep rsv)
