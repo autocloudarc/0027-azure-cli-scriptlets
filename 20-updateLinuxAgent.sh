@@ -46,28 +46,25 @@ HEADER
 
 # Udpate Linux Agent (waagent) on CentOS 7
 # Intialize varaibles
-autoUpdateEnabled='AutoUpdate.Enabled=y'
-resourceDiskEnableSwap="ResourceDisk.EnableSwap=y"
-resourceDiskSwapSize="ResourceDisk.SwapSizeMB=4096"
+autoUpdateEnabledFind='# AutoUpdate.Enabled=n'
+autoUpdateEnabledReplace='AutoUpdate.Enabled=y'
+resourceDiskEnableSwapFind='ResourceDisk.EnableSwap=n'
+resourceDiskEnableSwapReplace='ResourceDisk.EnableSwap=y'
+resourceDiskSwapSizeFind='ResourceDisk.SwapSizeMB=0'
+resourceDiskSwapSizeReplace='ResourceDisk.SwapSizeMB=4096'
 waagentConf='/etc/waagent.conf'
+service='waagent.service'
+
 # Install the latest package version
 sudo yum -y install WALinuxAgent
 # Set waagent to auto update
-if [[ ! $(grep -q "$autoUpdateEnabled" $waagentConf) ]]
-then
-  sudo sed -i 's/# AutoUpdate.Enabled=n/AutoUpdate.Enabled=y/' /etc/waagent.conf
-fi
+sudo sed -i "s/$autoUpdateEnabledFind/$autoUpdateEnabledReplace/" $waagentConf
 # Enable resource disk swap
-if [[ ! $(grep -q "$resourceDiskEnableSwap" $waagentConf) ]]
-then
-  sudo sed -i 's/ResourceDisk.EnableSwap=n/ResourceDisk.EnableSwap=y/g' /etc/waagent.conf
-fi
+sudo sed -i "s/$resourceDiskEnableSwapFind/$resourceDiskEnableSwapReplace/" $waagentConf
 # Set resource disk swap size to 4096 MB
-if [[ ! $(grep -q "$resourceDiskSwapSize" $waagentConf) ]]
-then
-  sudo sed -i 's/ResourceDisk.SwapSizeMB=0/ResourceDisk.SwapSizeMB=4096/g' /etc/waagent.conf
-fi
-
-# Restart the waagent service
-sudo systemctl restart waagent.service
+sudo sed -i "s/$resourceDiskSwapSizeFind/$resourceDiskSwapSizeReplace/" $waagentConf
+# Restart the service
+sudo systemctl restart $service
+# Test results using extended regular expressions (-E)
+grep -E '^AutoUpdate.Enabled|ResourceDisk.*Swap*' "$waagentConf"
 # end of bash script
