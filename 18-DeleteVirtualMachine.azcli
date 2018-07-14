@@ -1,0 +1,12 @@
+# Delete lnx1 virtual machine
+# Delete the vm
+az vm delete --resource-group poc-east-rg --name lnx1 --yes
+# Locate the nic for lnx1. It will start with lnx1 plus a 3 digit random number
+lnx1vnic=$(az network nic list --resource-group poc-east-rg --query "[]".name -o tsv | grep lnx1)
+# Delete the nic
+az network nic delete --resource-group poc-east-rg --name $lnx1vnic
+# Find lnx1 disk
+lnx1disk=$(az disk list --resource-group poc-east-rg --query [?managedBy=='null'].name -o tsv | grep lnx1)
+# Delete lnx1 disk and suppress confirmation prompt
+az disk delete --resource-group poc-east-rg --name $lnx1disk --yes
+# end of scriptlet
