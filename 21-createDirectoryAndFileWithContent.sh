@@ -56,6 +56,7 @@ if [ ! -d "$targetDir" ]; then
     sudo mkdir "$targetDir"
 fi
 sudo touch $testFile
+sudo chmod a+w $testFile
 echo $testMessage > $testFile
 
 # FOOTER
@@ -63,4 +64,4 @@ echo $testMessage > $testFile
 find $testFile
 cat $testFile
 # Uncomment below to remove testFile
-# rm /var/log/tmp/testFile
+# rm /var/log/tmp/testFile -v
