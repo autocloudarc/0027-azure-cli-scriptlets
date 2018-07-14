@@ -47,30 +47,24 @@ HEADER
 
 # Udpate Linux Agent (waagent) on CentOS 7
 # Intialize varaibles
-autoUpdateEnabled='AutoUpdate.Enabled=y'
-resourceDiskEnableSwap="ResourceDisk.EnableSwap=y"
-resourceDiskSwapSize="ResourceDisk.SwapSizeMB=4096"
+autoUpdateEnabledFind='AutoUpdate.Enabled=y'
+autoUpdateEnabledReplace='# AutoUpdate.Enabled=n'
+resourceDiskEnableSwapFind='ResourceDisk.EnableSwap=y'
+resourceDiskEnableSwapReplace='ResourceDisk.EnableSwap=n'
+resourceDiskSwapSizeFind='ResourceDisk.SwapSizeMB=4096'
+resourceDiskSwapSizeReplace='ResourceDisk.SwapSizeMB=0'
+queryStringForTestingResults='^# AutoUpdate|ResourceDisk.*Swap*'
 waagentConf='/etc/waagent.conf'
-# Install the latest package version
-sudo yum -y install WALinuxAgent
-# Set waagent to auto update
-if [[ $(grep -q "$autoUpdateEnabled" $waagentConf) ]]
-then
-  sudo sed -i 's/AutoUpdate.Enabled=y/# AutoUpdate.Enabled=n/' /etc/waagent.conf
-fi
-# Enable resource disk swap
-if [[ $(grep -q "$resourceDiskEnableSwap" $waagentConf) ]]
-then
-  sudo sed -i 's/ResourceDisk.EnableSwap=y/ResourceDisk.EnableSwap=n/' /etc/waagent.conf
-fi
-# Set resource disk swap size to 4096 MB
-if [[ $(grep -q "$resourceDiskSwapSize" $waagentConf) ]]
-then
-  sudo sed -i 's/ResourceDisk.SwapSizeMB=4096/ResourceDisk.SwapSizeMB=0/' /etc/waagent.conf
-fi
-# Restart the waagent service
-sudo systemctl restart waagent.service
-# Test results
-# grep -E "^AutoUpdate|ResourceDisk.*Swap*" /etc/waagent.conf
+service='waagent.service'
 
+# Reset waagent NOT to auto update
+sudo sed -i "s/$autoUpdateEnabledFind/$autoUpdateEnabledReplace/" $waagentConf
+# Disable resource disk swap
+sudo sed -i "s/$resourceDiskEnableSwapFind/$resourceDiskEnableSwapReplace/" $waagentConf
+# Reset resource disk swap size to 0 MB
+sudo sed -i "s/$resourceDiskSwapSizeFind/$resourceDiskSwapSizeReplace/" $waagentConf
+# Restart the service
+sudo systemctl restart $service
+# Test results using extended regular expressions (-E)
+grep -E '^# AutoUpdate.Enabled|ResourceDisk.*Swap*' $waagentConf
 # end of bash script
