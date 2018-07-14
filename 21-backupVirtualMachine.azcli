@@ -13,7 +13,7 @@ az backup protection enable-for-vm --resource-group poc-east-rg --vault-name $rs
 az backup protection backup-now --resource-group poc-east-rg --vault-name $rsv --container-name $vm --item-name $vm --retain-until 14-08-2018
 # Check backup status until it is completed
 # Show backup result (either InProgress or Completed) with paded numerical index and timestamp.
-for i in $(seq -f "%02g" 1 20)
+for i in $(seq -f "%02g" 1 100)
 do
     backupStatus=$(az backup job list --resource-group poc-east-rg --vault-name $rsv --query "[?properties.operation=='Backup'].properties.status" -o tsv)
     echo $i $(date +%F/%T%Z) $backupStatus
