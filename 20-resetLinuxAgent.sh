@@ -68,7 +68,9 @@ if [[ $(grep -q "$resourceDiskSwapSize" $waagentConf) ]]
 then
   sudo sed -i 's/ResourceDisk.SwapSizeMB=4096/ResourceDisk.SwapSizeMB=0/' /etc/waagent.conf
 fi
-
 # Restart the waagent service
 sudo systemctl restart waagent.service
+# Test results
+# grep -E "^AutoUpdate|ResourceDisk.*Swap*" /etc/waagent.conf
+
 # end of bash script
