@@ -1,0 +1,19 @@
+# Backup virtual machine
+# Reference: https://docs.microsoft.com/en-us/azure/backup/quick-backup-vm-cli
+# Set backup policy
+# Find recovery services vault name
+rsv=$(backup vault list --resource-group poc-east-rg --query "[]".name -o tsv | grep rsv)
+vm="lnx2"
+# Enable backup for an Azure VM
+az backup protection enable-for-vm --resource-group poc-east-rg --vault-name $rsv --vm $vm --policy-name DefaultPolicy
+# Start a backup job and set the --retain-until parameter for today + 30 days using the DD-MM-YYYY format
+az backup protection backup-now --resource-group poc-east-rg --vault-name $rsv --container-name $vm --item-name $vm --retain-until 14-08-2018
+# Check backup status until it is completed
+# Intialize backup status as InProgress
+backupStatus="InProgress"
+Until [ $backupStatus -eq "Completed" ]
+do
+    backupStatus=$(az backup job list --resource-group poc-east-rg --vault-name $rsv --query "[].status" -o tsv)
+done
+echo $backupStatus
+# end of scriptlet
