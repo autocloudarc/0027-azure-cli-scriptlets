@@ -55,19 +55,19 @@ yum -y install WALinuxAgent
 # Set waagent to auto update
 if [[ ! $(grep -q "$autoUpdateEnabled" $waagentConf) ]]
 then
-  sudo sed -i 's/# AutoUpdate.Enabled=n/AutoUpdate.Enabled=y/g' $waagentConf
+  sudo sed -i 's/# AutoUpdate.Enabled=n/AutoUpdate.Enabled=y/' /etc/waagent.conf
 fi
 # Enable resource disk swap
-if [[ ! $(grep -q "resourceDiskEnableSwap" $waagentConf) ]]
+if [[ ! $(grep -q "$resourceDiskEnableSwap" $waagentConf) ]]
 then
-  sudo sed -i 's/ResourceDisk.EnableSwap=n/ResourceDisk.EnableSwap=y/g' $waagentConf
+  sudo sed -i 's/ResourceDisk.EnableSwap=n/ResourceDisk.EnableSwap=y/g' /etc/waagent.conf
 fi
 # Set resource disk swap size to 4096 MB
-if [[ ! $(grep -q "resourceDiskSwapSize" $waagentConf) ]]
+if [[ ! $(grep -q "$resourceDiskSwapSize" $waagentConf) ]]
 then
-  sudo sed -i 's/ResourceDisk.SwapSizeMB=0/ResourceDisk.SwapSizeMB=4096/g' $waagentConf
+  sudo sed -i 's/ResourceDisk.SwapSizeMB=0/ResourceDisk.SwapSizeMB=4096/g' /etc/waagent.conf
 fi
 
 # Restart the waagent service
-systemctl restart walinuxagent.service
+systemctl restart waagent.service
 # end of bash script
