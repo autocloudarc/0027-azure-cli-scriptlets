@@ -7,7 +7,7 @@
 # Find recovery services vault name
 rsv=$(az backup vault list --resource-group poc-east-rg --query "[]".name -o tsv | grep rsv)
 vm="lnx2"
-# Enable backup for an Azure VM
+# Enable backup for an Azure VM. The DefaultPolicy starts the backup at 06:00 daily and uses a retention period of 30 days.
 az backup protection enable-for-vm --resource-group poc-east-rg --vault-name $rsv --vm $vm --policy-name DefaultPolicy
 # Start a backup job and set the --retain-until parameter for today + 30 days using the DD-MM-YYYY format
 az backup protection backup-now --resource-group poc-east-rg --vault-name $rsv --container-name $vm --item-name $vm --retain-until 14-08-2018
