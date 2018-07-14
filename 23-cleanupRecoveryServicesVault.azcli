@@ -2,7 +2,7 @@
 # Reference: https://docs.microsoft.com/en-us/azure/backup/quick-backup-vm-cli
 # Clean up deployment
 # Find recovery services vault name
-rsv=$(backup vault list --resource-group poc-east-rg --query "[]".name -o tsv | grep rsv)
+rsv=$(az backup vault list --resource-group poc-east-rg --query "[]".name -o tsv | grep rsv)
 # Assign VM name
 vm="lnx2"
 # Disable backup and delete data
