@@ -1,0 +1,12 @@
+# Cleanup recover services vault
+# Reference: https://docs.microsoft.com/en-us/azure/backup/quick-backup-vm-cli
+# Clean up deployment
+# Find recovery services vault name
+rsv=$(backup vault list --resource-group poc-east-rg --query "[]".name -o tsv | grep rsv)
+# Assign VM name
+vm="lnx2"
+# Disable backup and delete data
+az backup protection disable --resource-group poc-east-rg --vault-name $rsv --container-name $vm --item-name $vm --delete-backup-data true
+# Delete recovery services vault
+az vackup vault delete --resource-group poc-east-rg --name $rsv
+# end of scriptlet
