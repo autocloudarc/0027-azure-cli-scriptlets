@@ -1,5 +1,7 @@
 # Backup virtual machine
-# Reference: https://docs.microsoft.com/en-us/azure/backup/quick-backup-vm-cli
+# Reference:
+# https://docs.microsoft.com/en-us/azure/backup/quick-backup-vm-cli
+# https://stackoverflow.com/questions/8789729/how-to-zero-pad-a-sequence-of-integers-in-bash-so-that-all-have-the-same-width
 # Set backup policy
 # Find recovery services vault name
 rsv=$(az backup vault list --resource-group poc-east-rg --query "[]".name -o tsv | grep rsv)
@@ -9,11 +11,10 @@ az backup protection enable-for-vm --resource-group poc-east-rg --vault-name $rs
 # Start a backup job and set the --retain-until parameter for today + 30 days using the DD-MM-YYYY format
 az backup protection backup-now --resource-group poc-east-rg --vault-name $rsv --container-name $vm --item-name $vm --retain-until 14-08-2018
 # Check backup status until it is completed
-# Intialize backup status as InProgress
-backupStatus="InProgress"
-Until [ $backupStatus -eq "Completed" ]
+# Show backup result (either InProgress or Completed) with paded numerical index and timestamp.
+for i in $(seq -f "%02g" 1 20)
 do
-    backupStatus=$(az backup job list --resource-group poc-east-rg --vault-name $rsv --query "[].status" -o tsv)
+    backupStatus=$(az backup job list --resource-group poc-east-rg --vault-name $rsv --query "[?properties.operation=='Backup'].properties.status" -o tsv)
+    echo $i $(date +%F/%T%Z) $backupStatus
 done
-echo $backupStatus
 # end of scriptlet
