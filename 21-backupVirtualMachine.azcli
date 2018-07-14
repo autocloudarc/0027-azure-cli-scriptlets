@@ -2,7 +2,7 @@
 # Reference: https://docs.microsoft.com/en-us/azure/backup/quick-backup-vm-cli
 # Set backup policy
 # Find recovery services vault name
-rsv=$(backup vault list --resource-group poc-east-rg --query "[]".name -o tsv | grep rsv)
+rsv=$(az backup vault list --resource-group poc-east-rg --query "[]".name -o tsv | grep rsv)
 vm="lnx2"
 # Enable backup for an Azure VM
 az backup protection enable-for-vm --resource-group poc-east-rg --vault-name $rsv --vm $vm --policy-name DefaultPolicy
