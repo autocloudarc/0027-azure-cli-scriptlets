@@ -1,0 +1,25 @@
+# Get the storage account name
+username@hostname:~$ saName=$(az storage account list -g rgAdatumDev00 --query [].name -o tsv)
+# List the primary storage account key
+username@hostname:~$ key1=$(az storage account keys list --resource-group rgAdatumDev## --account-name $saName \
+--query ‘[0].{key:value}’ --output tsv)
+# Create the file storage share of 10 GB named adatumdevshare##
+username@hostname:~$ az storage share create --name adatumdevshare## --quota 10 --account-name <storage-account-name> \
+--account-key $key1
+# Obtain the public IP address of the VM
+username@hostname:~$ pip04=$(az network public-ip show -g rgAdatumDev## -n azreaus2lx##04-pip --query "ipAddress" -o tsv)
+# SSH to VM
+username@hostname:~$ ssh -i ~/.ssh/linux.user.sshkey linux.user@$pip04
+# Create a mount-point directory
+linux.user@azreaus2lx##01:~$ sudo mkdir -p /mnt/adatumdevmount##
+# Mount the SMB share
+linux.user@azreaus2lx##01:~$ sudo mount -t cifs //<storageAccountName>.file.core.windows.net/adatumdevshare## /mnt/adatumdevmount## /
+-o vers=3.0,username=$saName,password=<storageAccountKey1>,dir_mode=0777,file_mode=0777
+# Persist SMB mount through reboots by appending the /etc/fstab file
+linux.user@azreaus2lx##01:~$ sudo [vi | nano] /etc/fstab
+//<storage-account-name>##.file.core.windows.net/adatumdevshare## /adatumdevmount## cifs vers=3.0,username=<storage-account-name>##,password=StorageAccountKeyEndingIn==,dir_mode=0777,file_mode=0777
+^X, [y], [enter]
+# Show and test new mount point:
+linux.user@azreaus2lx0002:~$ sudo mount - -show-labels | grep adatumdevshare##
+linux.user@azreaus2lx0002:~$ ls -al /mnt/adatumdevmount##
+total 0
