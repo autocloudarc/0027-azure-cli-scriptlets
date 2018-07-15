@@ -1,0 +1,18 @@
+# Download a script to mount a recovery point
+# References
+# 1. https://stackoverflow.com/questions/6031612/assign-awk-result-to-variable
+vm="lnx2"
+rg="poc-east-rg"
+# Get recovery services vault name
+rsv=$(az backup vault list --resource-group poc-east-rg --query "[]".name -o tsv | grep rsv)
+# Get recovery point name
+rp=$(az backup recoverypoint list --container-name $vm --item-name $vm --resource-group $rg --vault-name $rsv --query [].name -o tsv)
+rpArray=($rp)
+rpCurrent=${rpArray[0]}
+# Get script to mount recovery point
+az backup restore files mount-rp --container-name $vm --item-name $vm --resource-group $rg --rp-name $rpCurrent --vault-name $rsv
+# Sample output
+# File downloaded: lnx2_eus_<guid>.sh. Use password <15chars>
+lbpip=$(az network public-ip show --resource-group poc-east-rg --name lnx-lb-pip --query ipAddress -o tsv)
+# Run scp command to copy file to linux.user home path and supply password when prompted:
+# scp -i ~/.ssh/linux.user.sshkey -P 2202 lnx2_eus_<guid>.sh linux.user@$lbpip:
