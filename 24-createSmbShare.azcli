@@ -1,4 +1,7 @@
 # Get the storage account name
+storageAccount=$(az storage account list --resource-group poc-storage-rg -o table | grep eastus | awk '{print $4}')
+# Display the storage account name
+echo $saName
 username@hostname:~$ saName=$(az storage account list -g rgAdatumDev00 --query [].name -o tsv)
 # List the primary storage account key
 username@hostname:~$ key1=$(az storage account keys list --resource-group rgAdatumDev## --account-name $saName \
