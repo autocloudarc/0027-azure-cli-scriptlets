@@ -1,28 +1,28 @@
 # Get the storage account name
-storageAccount=$(az storage account list --resource-group poc-storage-rg -o table | grep eastus | awk '{print $4}')
-# Display the storage account name
-echo $saName
-username@hostname:~$ saName=$(az storage account list -g rgAdatumDev00 --query [].name -o tsv)
-# List the primary storage account key
-username@hostname:~$ key1=$(az storage account keys list --resource-group rgAdatumDev## --account-name $saName \
---query ‘[0].{key:value}’ --output tsv)
+rgStorage="poc-storage-rg"
+rgEast="poc-east-rg"
+region="eastus"
+share="pocshare"
+quota=10
+pipName="lnx-lb-pip"
+storageAccount=$(az storage account list --resource-group $rg -o table | grep $region | awk '{print $4}')
+key1=$(az storage account keys list --resource-group $rgStorage --account-name $storageAccount --query ‘[0].{key:value}’ --output tsv)
 # Create the file storage share of 10 GB named adatumdevshare##
-username@hostname:~$ az storage share create --name adatumdevshare## --quota 10 --account-name <storage-account-name> \
---account-key $key1
+az storage share create --name $share --quota $quota --account-name $storageAccount --account-key $key1
 # Obtain the public IP address of the VM
-username@hostname:~$ pip04=$(az network public-ip show -g rgAdatumDev## -n azreaus2lx##04-pip --query "ipAddress" -o tsv)
+lbpip=$(az network public-ip show --resource-group $rgEast --name $pipName --query ipAddress -o tsv)
 # SSH to VM
-username@hostname:~$ ssh -i ~/.ssh/linux.user.sshkey linux.user@$pip04
+ssh -i ~/.ssh/linux.user.sshkey -p 2202 linux.user@$lbpip
 # Create a mount-point directory
-linux.user@azreaus2lx##01:~$ sudo mkdir -p /mnt/adatumdevmount##
+# linux.user@lnx2/3:~$ sudo mkdir -p /mnt/pocmount
 # Mount the SMB share
-linux.user@azreaus2lx##01:~$ sudo mount -t cifs //<storageAccountName>.file.core.windows.net/adatumdevshare## /mnt/adatumdevmount## /
--o vers=3.0,username=$saName,password=<storageAccountKey1>,dir_mode=0777,file_mode=0777
+# linux.user@lnx2/3:~$ sudo mount -t cifs //<storageAccountName>.file.core.windows.net/pocshare /mnt/pocmount /
+# -o vers=3.0,username=<storageAccount>,password=<storageAccountKey1>,dir_mode=0777,file_mode=0777
 # Persist SMB mount through reboots by appending the /etc/fstab file
-linux.user@azreaus2lx##01:~$ sudo [vi | nano] /etc/fstab
-//<storage-account-name>##.file.core.windows.net/adatumdevshare## /adatumdevmount## cifs vers=3.0,username=<storage-account-name>##,password=StorageAccountKeyEndingIn==,dir_mode=0777,file_mode=0777
-^X, [y], [enter]
+# linux.user@lnx2/3:~$ sudo nano /etc/fstab
+# //<storage-account-name>.file.core.windows.net/pocshare/pocmount cifs vers=3.0,username=<storage-account-name>,password=<StorageAccountKey>,dir_mode=0777,file_mode=0777
+# ^X, [y], [enter]
 # Show and test new mount point:
-linux.user@azreaus2lx0002:~$ sudo mount - -show-labels | grep adatumdevshare##
-linux.user@azreaus2lx0002:~$ ls -al /mnt/adatumdevmount##
-total 0
+# linux.user@lnx2/3:~$ sudo mount - -show-labels | grep pocshare
+# linux.user@lnx2/3:~$ ls -al /mnt/pocmount
+# total 0
