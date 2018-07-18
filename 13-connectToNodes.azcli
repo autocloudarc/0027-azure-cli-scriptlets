@@ -1,5 +1,8 @@
 # Connect to each Linux node behind load balancer
-lbpip=$(az network public-ip show --resource-group poc-east-rg --name lnx-lb-pip --query ipAddress -o tsv)
+# Intialize values
+$rg="poc-east-rg"
+$lbpipname="lnx-lb-pip"
+lbpip=$(az network public-ip show --resource-group poc-east-rg --name $lbpipname --query ipAddress -o tsv)
 # Based on the previosly configured load balancer NAT rules on the load balancer resource, lnx-lb
 # 1. [lnx1nat-ssh] Tcp port 2201 will map to tcp 22 on lnx1
 # 2. [lnx2nat-ssh] Tcp port 2202 will map to tcp 22 on lnx2
