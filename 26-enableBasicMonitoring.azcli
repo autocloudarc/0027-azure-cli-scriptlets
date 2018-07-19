@@ -1,7 +1,6 @@
+# Enable basic monitoring for lnx2 and lnx3
 rgStorage="poc-storage-rg"
 rgEast="poc-east-rg"
-region="eastus"
-pipName="lnx-lb-pip"
 # Get the bloburi string
 bloburi=$(az storage account list --resource-group poc-storage-rg --query "[?primaryLocation=='eastus'].primaryEndpoints.blob" -o tsv)
 # For each vm (lnx2 and lnx3), enable boot diagnostics, generate a shutdown event and get boot diagnostics logs
