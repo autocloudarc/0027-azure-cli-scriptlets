@@ -3,6 +3,6 @@
 az network nic create --resource-group poc-east-rg --name lnx2-vnic --vnet-name East-VNET --subnet lnx-east-sn
 az vm create --resource-group poc-east-rg --location eastus --name lnx2 --os-disk-size-gb 32 --storage-sku Standard_LRS --admin-username linux.user --availability-set lnx-as \
 --image CentOS --size Standard_D1_v2 --nics lnx2-vnic \
---ssh-key-value '<Paste content from: cat ~/.ssh/linux.user.sshkey.pub here>'
+--ssh-key-value $(cat ~/.ssh/linux.user.sshkey.pub)
 # end scriptlet
 
