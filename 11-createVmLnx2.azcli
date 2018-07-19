@@ -5,4 +5,3 @@ az vm create --resource-group poc-east-rg --location eastus --name lnx2 --os-dis
 --image CentOS --size Standard_D1_v2 --nics lnx2-vnic \
 --ssh-key-value $(cat ~/.ssh/linux.user.sshkey.pub)
 # end scriptlet
-
